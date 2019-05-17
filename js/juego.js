@@ -120,7 +120,11 @@ Juego.buclePrincipal = function() {
   // Funcion que dibuja por cada fotograma a los objetos en pantalla.
   this.dibujar();
   // Esto es una forma de llamar a la funcion Juego.buclePrincipal() repetidas veces
+  if(!this.ganoJuego() && !this.terminoJuego()){
   window.requestAnimationFrame(this.buclePrincipal.bind(this));
+  } else {
+    this.dibujarFondo();
+  }
 };
 
 Juego.update = function() {
@@ -271,6 +275,7 @@ Juego.dibujarFondo = function() {
 
   // Si se gano el juego hay que mostrar el mensaje de ganoJuego de fondo
   else if (this.ganoJuego()) {
+    Dibujante.borrarAreaDeJuego();
     Dibujante.dibujarImagen('imagenes/Splash.png', 190, 113, 500, 203);
     document.getElementById('reiniciar').style.visibility = 'visible';
   } else {
