@@ -25,11 +25,17 @@ var Juego = {
     new Obstaculo('imagenes/valla_horizontal.png',130, 430, 30, 30, 1),
     new Obstaculo('imagenes/valla_horizontal.png',130, 100, 30, 30, 1),
     new Obstaculo('imagenes/valla_horizontal.png',160, 100, 30, 30, 1),
+    new Obstaculo('imagenes/valla_horizontal.png',510, 420, 30, 30, 1),
     new Obstaculo('imagenes/valla_vertical.png',180, 450, 30, 30, 1),
-
-
-
-
+    new Obstaculo('imagenes/valla_vertical.png',480, 450, 30, 30, 1),
+    new Obstaculo('imagenes/valla_vertical.png',480, 480, 30, 30, 1),
+    new Obstaculo('imagenes/auto_verde_abajo.png',180,230,15,30,1),
+    new Obstaculo('imagenes/auto_verde_abajo.png',860,380,15,30,1),
+    new Obstaculo('imagenes/auto_verde_derecha.png',380,480,30,15,1),        
+    new Obstaculo('imagenes/bache.png',180,280,30,30,1),
+    new Obstaculo('imagenes/bache.png',310,485,30,30,1),
+    new Obstaculo('imagenes/bache.png',510,130,30,30,1),
+    new Obstaculo('imagenes/bache.png',810,410,30,30,1),
   ],
   /* Estos son los bordes con los que se puede chocar, por ejemplo, la vereda.
    Ya estan ubicados en sus lugares correspondientes. Ya aparecen en el mapa, ya
@@ -52,9 +58,17 @@ var Juego = {
   ],
   // Los enemigos se agregaran en este arreglo.
   enemigos: [
-
+    //Zombies Caminantes
+    new ZombieCaminante('imagenes/zombie1.png', 300, 401, 10, 10, 2, {desdeX: 0, hastaX: 961, desdeY: 0, hastaY: 577}),
+    new ZombieCaminante('imagenes/zombie2.png', 500, 210, 10, 10, 2, {desdeX: 0, hastaX: 961, desdeY: 0, hastaY: 577}),
+    new ZombieCaminante('imagenes/zombie3.png', 630, 100, 10, 10, 2, {desdeX: 0, hastaX: 961, desdeY: 0, hastaY: 577}),
+    new ZombieCaminante('imagenes/zombie4.png', 720, 300, 10, 10, 2, {desdeX: 0, hastaX: 961, desdeY: 0, hastaY: 577}),
+    new ZombieCaminante('imagenes/zombie2.png', 800, 200, 10, 10, 2, {desdeX: 0, hastaX: 961, desdeY: 0, hastaY: 577}),
+    //Zombies Conductores
+    new ZombieConductor('imagenes/tren_horizontal.png', 400, 322, 90, 30,3,{desdeX: 0, hastaX: 851, desdeY: 322, hastaY: 577},'h'),
+    new ZombieConductor('imagenes/tren_vertical.png', 644, 0, 30, 90,4,{desdeX: 644, hastaX: 961, desdeY: 0, hastaY: 577},'v'),        
+    new ZombieConductor('imagenes/tren_vertical.png', 678, 0, 30, 90,5,{desdeX: 678, hastaX: 961, desdeY: 0, hastaY: 577},'v')
   ]
-
 }
 
 /* Se cargan los recursos de las imagenes, para tener un facil acceso
@@ -165,7 +179,7 @@ Juego.dibujar = function() {
 
   // Se recorren los enemigos pintandolos
   this.enemigos.forEach(function(enemigo) {
-    /* Completar */
+    Dibujante.dibujarEntidad(enemigo);
   });
 
   // El dibujante dibuja las vidas del jugador
@@ -175,15 +189,25 @@ Juego.dibujar = function() {
     var x = tamanio * i
     Dibujante.dibujarRectangulo('red', x, 0, tamanio, 8);
   }
+
+  //El dibujante dibuja la meta
+  Dibujante.dibujarRectangulo('black',761,530, 16, 16);
+  Dibujante.dibujarRectangulo('white',777,530, 16, 16);
+  Dibujante.dibujarRectangulo('black',793,530, 16, 16);
+  Dibujante.dibujarRectangulo('white',808,530, 16, 16);
+  Dibujante.dibujarRectangulo('black',823,530, 16, 16);
+  Dibujante.dibujarRectangulo('white',837,530, 16, 16);
+  Dibujante.dibujarRectangulo('black',852,530, 16, 16);
+  Dibujante.dibujarRectangulo('white',867,530, 16, 16);
 };
-
-
 
 /* Recorre los enemigos haciendo que se muevan. De la misma forma que hicimos
 un recorrido por los enemigos para dibujarlos en pantalla ahora habra que hacer
 una funcionalidad similar pero para que se muevan.*/
 Juego.moverEnemigos = function() {
-  /* COMPLETAR */
+  this.enemigos.forEach(function(enemigo){
+    enemigo.mover();
+  });
 };
 
 /* Recorre los enemigos para ver cual esta colisionando con el jugador
@@ -212,6 +236,7 @@ Juego.chequearColisiones = function(x, y) {
     if (this.intersecan(obstaculo, this.jugador, x, y)) {
 
       /*COMPLETAR, obstaculo debe chocar al jugador*/
+      obstaculo.chocar(this.jugador);
 
       puedeMoverse = false
     }
